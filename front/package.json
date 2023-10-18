@@ -1,8 +1,5 @@
 {
   "proxy": "http://localhost:4000",
-  "devServer": {
-  "allowedHosts": "all"
-},
   "name": "front",
   "version": "0.1.0",
   "private": true,
@@ -23,6 +20,9 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
+  },
+  "devServer": {
+    "allowedHosts": "all"
   },
   "scripts": {
     "start": "react-scripts start",

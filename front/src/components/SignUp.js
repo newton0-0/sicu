@@ -1,14 +1,11 @@
-import {Grid, container, item} from "@mui/material"
+import {Grid} from "@mui/material"
 import {useState} from 'react'
 import path from './images/Web capture_17-10-2023_183633_www.figma.com.jpeg'
-
-const auth = false;
 
 const Registration = () => {
     const [login, setLogin] = useState(false)
     const [error, setError] = useState('')
-    const [done, setDone] = useState(false)
-    const [signupValues, setSignup] = useState(false)
+    const [validData, setValidity] = useState(null)
 
     //signup variables
     const [hospitalName, sethospitalName ] = useState('')
@@ -33,6 +30,9 @@ const Registration = () => {
     const [loginCode, setLoginCode] = useState('')
 
     //signup value check
+    const checkSignup = () =>{
+        (hospitalName.length !== 0)? setValidity(validData) : setValidity(false);
+    };
 
     const handleSignUp = async (e) => {
         e.preventDefault()
@@ -62,7 +62,7 @@ const Registration = () => {
     const handleLogin = async (e) => {
         e.preventDefault()
 
-        const userData = {loginHospitalName, loginEmailID, loginPassword, loginPassword}
+        const userData = {loginHospitalName, loginEmailID, loginPassword, loginCode}
 
         const res = await fetch('/login', {
             method: 'POST',
@@ -90,8 +90,8 @@ const Registration = () => {
                     <img src={path} alt="" />
                 </Grid>
                 <Grid item md={6} className="credentialsform">
-                    <p className='errorcase'>{error? error : null}</p>
-                    <button onClick={() => setLogin(!login)} className="signuplogin">SignUp / LogIn</button>
+                    <button onClick={() => {setLogin(!login); setError('');}} className="signuplogin">SignUp / LogIn</button>
+                    {error && <p className='errorcase'>{error? error : null}</p>}
                     {!login && <div className="signupPage">
                         <h3>Register</h3>
                         <form className="signupform">
@@ -110,7 +110,10 @@ const Registration = () => {
                             <input type="password" value={password} placeholder='Create Password' onChange={(e) => setpassword(e.target.value)}/>
                             <input type="password" value={matchPassword} placeholder='Confirm Password' onChange={(e) => setmatchPassword(e.target.value)}/>
                         </form>
-                        <button onClick={e => handleSignUp(e)} className="signup" disabled={!signupValues}>Sign Up</button>
+                        <button onClick={e => {
+                            checkSignup();
+                            validData? handleSignUp(e) : alert('enter valid values');
+                            }} className="signup">Sign Up</button>
                     </div>}
                     {login && <div className="signupPage">
                         <h2>Welcome to Sicu-Aura</h2>

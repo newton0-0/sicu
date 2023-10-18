@@ -15,8 +15,9 @@ const Dashboard = ({username}) => {
             headers: {
                 'Content-Type' : 'application/json'
             }
-        })
+        });
         console.log(chng);
+        window.location.reload();
     }
 
     const logOut = async () => {
@@ -39,34 +40,26 @@ const Dashboard = ({username}) => {
     getData();
 
     const handleSearch = () => {
-        const newData = JSON.parse(JSON.stringify(data));
-        const results = newData.filter(item => {
-            return item.hospitalName.includes(searchTerm) 
-            || item.emailID.includes(searchTerm)
-            || item.address.includes(searchTerm)
-            || item.phoneNumber.includes(searchTerm)
-            || item.city.includes(searchTerm)
-            || item.emergencyWardNumber.includes(searchTerm)
-            || item.pincode.includes(searchTerm)
-            || item.hospitalRegDate.includes(searchTerm)
-            || item.state.includes(searchTerm);
-        })
-        setFilter(results);
+        const results = data.filter(item => {
+            return (item.hospitalName.includes(searchTerm)
+            || item.emailID.includes(searchTerm));
+        });
+        (results)? setFilter(results) : alert("no data similar to keyword provided");
     }
     const handleFilter = (filterTerm) => {
-        if(filterTerm == "active") {
+        if(filterTerm === "active") {
             const results = data.filter(item => {
             return item.status;
             });
             setFilter(results);
         }
-        if(filterTerm == "inactive") {
+        if(filterTerm === "inactive") {
             const results = data.filter(item => {
                 return !item.status;
             });
             setFilter(results);
         }
-        if(filterTerm == "date") {
+        if(filterTerm === "date") {
             const results = data.sort((b, a) => new Date(a.date) - new Date(b.date));
             setFilter(results);
         }
@@ -99,6 +92,7 @@ const Dashboard = ({username}) => {
                     </Grid>
                 </Grid>
             </div>
+            <Grid item md={10} >
         {filtered && <table className='table'>
                 <tr>
                     <th>No.</th>
@@ -138,7 +132,7 @@ const Dashboard = ({username}) => {
                         </tr>
                     )
                 })}
-            </table>}
+            </table>}</Grid>
         </div>
     )
 }

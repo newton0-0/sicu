@@ -28,14 +28,15 @@ route.post('/login', async (req, res) => {
         const exists = await RegSchema.findOne({emailID : loginEmailID})
         if(!exists) {
             console.log('not exists');
-            return res.status(404).json({msg : 'user does not exists'})  
+            return res.status(404).json({error : 'user does not exists'})  
         }
         if(exists.emailID !== user.loginEmailID ) {
             console.log('mail password');
-            return res.status(404).json({msg : 'invalid credentials'}) 
+            return res.status(404).json({error : 'invalid credentials'}) 
         }
-        if(user.loginCode !== exists.hospitalRegNumber) {
-            return res.status(400).json({msg : 'wrong access code'})
+        if(exists.hospitalRegNumber !== user.loginCode) {
+            console.log(user.loginCode, exists.hospitalRegNumber);
+            return res.status(400).json({error : 'wrong access code'})
         }
         bcrypt.compare(user.loginPassword, exists.password)
             .then(() => {

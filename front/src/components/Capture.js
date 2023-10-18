@@ -36,12 +36,6 @@ function WebcamCapture() {
     setCapturedImage(image);
   };
 
-  const redirectToAnotherPage = () => {
-    window.location.replace("/dashboard")
-    // Add code to redirect to another page using React Router or other navigation methods
-    // Example using React Router: history.push('/other-page');
-  };
-
   return (
     <div className='webcap'>
       <Grid container spacing={2}>
@@ -51,9 +45,9 @@ function WebcamCapture() {
         <Grid item md={5} className='face'>
       <h1>Facial Verification</h1>
       {showVideo ? (
-        <video ref={videoRef} autoPlay />
+        <video ref={videoRef} autoPlay className='faceview'/>
       ) : (
-        <img src={capturedImage} alt="Captured" />
+        <img src={capturedImage} alt="Captured" className='faceview'/>
       )}
       {showVideo && (
         <button onClick={startWebcam}>Start Webcam</button>
@@ -64,7 +58,7 @@ function WebcamCapture() {
       {!showVideo && (
         <button onClick={() => {window.location.reload()}}>Retake</button>
       )}
-      {capturedImage && <button onClick={() => window.location.replace('/dashboard')}>Confirm ?</button>}
+      {capturedImage && <button onClick={() => window.location.replace('/dashboard')}>Confirm and Proceed?</button>}
       <canvas ref={canvasRef} style={{ display: 'none' }} />
         </Grid>
       </Grid>
